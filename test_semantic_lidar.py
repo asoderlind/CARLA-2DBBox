@@ -106,7 +106,7 @@ def main():
 
         # Remove parked vehicles
         objects_to_toggle = {}
-        parked_cars = world.get_environment_objects(carla.CityObjectLabel.ParkedCar)
+        parked_cars = world.get_environment_objects(carla.CityObjectLabel.Car)
         for parked_car in parked_cars:
             if parked_car.id not in objects_to_toggle:
                 objects_to_toggle.add(parked_car.id)
