@@ -99,6 +99,11 @@ def main():
         traffic_manager.set_global_distance_to_leading_vehicle(2.0)
         world = client.get_world()
 
+        # Set weather
+        weather = world.get_weather()
+        weather.sun_altitude_angle = -90
+        world.set_weather(weather)
+
         # Remove parked vehicles
         objects_to_toggle = {}
         parked_cars = world.get_environment_objects(carla.CityObjectLabel.ParkedCar)
