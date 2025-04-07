@@ -286,7 +286,6 @@ def main():
         while True:
             # Extract the available data
             nowFrame = world.tick()
-            print("Frame: %d" % cur_frame)
 
             # Check whether it's time for sensor to capture data
             if time_sim >= 1:
