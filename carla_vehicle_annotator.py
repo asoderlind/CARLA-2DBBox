@@ -677,8 +677,8 @@ def save2darknet(
     bbr = bboxes is not None
     vcr = vehicle_class is not None
     cir = carla_img is not None
-    distances = distances is not None
-    if bbr or vcr or cir or distances:
+    dst = distances is not None
+    if bbr or vcr or cir or dst:
         # save image
         carla_img.convert(cc_rgb)
         img_bgra = np.array(carla_img.raw_data).reshape(
