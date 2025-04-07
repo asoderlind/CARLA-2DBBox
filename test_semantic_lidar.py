@@ -105,7 +105,7 @@ def main():
         world.set_weather(weather)
 
         # Remove parked vehicles
-        objects_to_toggle = {}
+        objects_to_toggle = set()
         parked_cars = world.get_environment_objects(carla.CityObjectLabel.Car)
         for parked_car in parked_cars:
             if parked_car.id not in objects_to_toggle:
