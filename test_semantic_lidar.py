@@ -265,6 +265,7 @@ def main():
 
                 # Calculating visible bounding boxes
                 filtered_out, _ = cva.auto_annotate_lidar(
+                    ego_vehicle,
                     vehicles,
                     cam,
                     lidar_img,

@@ -30,6 +30,7 @@ import carla
 
 ### Use this function to get 2D bounding boxes of visible vehicles to camera using semantic LIDAR
 def auto_annotate_lidar(
+    ego_vehicle,
     vehicles,
     camera,
     lidar_data,
@@ -57,13 +58,19 @@ def auto_annotate_lidar(
         if idx_counts[(visible_id == v.id).nonzero()[0]] >= min_detect
     ]
     bounding_boxes_2d = [get_2d_bb(vehicle, camera) for vehicle in visible_vehicles]
-    if len(bounding_boxes_2d) > 0:
+    vehicle_distances = [
+        v.get_transform().location.distance(ego_vehicle.get_transform().location)
+        / max_dist
+        for v in visible_vehicles
+    ]
+
+    if len(vehicle_distances) > 0:
         breakpoint()
-    # vehicle_distances = []
 
     filtered_out = {}
     filtered_out["vehicles"] = visible_vehicles
     filtered_out["bbox"] = bounding_boxes_2d
+    filtered_out["distances"] = vehicle_distances
     if json_path is not None:
         filtered_out["class"] = get_vehicle_class(visible_vehicles, json_path)
     return filtered_out, filtered_data
