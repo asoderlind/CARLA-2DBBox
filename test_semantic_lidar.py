@@ -134,7 +134,12 @@ def main():
 
     # Unique video name
     vid_name = (
-        str(int(time.time()))[-5:] + "-" + args.map + "-" + str(args.number_of_vehicles)
+        str(int(time.time()))[-5:]
+        + "-"
+        + args.map
+        + "-"
+        + str(args.number_of_vehicles)
+        + "npc"
     )
     print("Video name: %s" % vid_name)
 
