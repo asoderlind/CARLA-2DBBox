@@ -14,10 +14,6 @@ cls2id = {
     "bicycle": 5,
 }
 
-### This dictionary contains definitions of each label
-class_ref = {"passenger_car": 0, "truck": 1, "motorcycle": 2, "bicycle": 3, "others": 9}
-
-
 import glob
 import os
 import sys
@@ -64,6 +60,7 @@ def main():
         try:
             spectator.set_transform(get_transform(location, -30))
             if autoFill:
+                # Special case for some vehicles
                 if (
                     vehicle.type_id == "vehicle.bmw.grandtourer"
                     or vehicle.type_id == "vehicle.mini.cooper_s"
@@ -84,7 +81,7 @@ def main():
             vehicle_dict[str(vehicle.type_id)] = x
         finally:
             vehicle.destroy()
-    json_dict = {"reference": class_ref, "classification": vehicle_dict}
+    json_dict = {"reference": cls2id, "classification": vehicle_dict}
     with open("vehicle_class_json_file.txt", "w+") as outfile:
         json_file = json.dump(json_dict, outfile, indent=4)
 
