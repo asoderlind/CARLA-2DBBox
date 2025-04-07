@@ -21,7 +21,10 @@ import glob
 import sys
 import cv2
 import carla
-import math
+
+
+def clamp(value, min_value, max_value):
+    return max(min_value, min(value, max_value))
 
 
 ### PART 0
@@ -708,10 +711,10 @@ def save2darknet(
             h = (box[1, 1] - box[0, 1]) / carla_img.height
 
             # Fit everything inside the [0,1] range
-            uc = math.clamp(uc, 0, 1)
-            vc = math.clamp(vc, 0, 1)
-            w = math.clamp(w, 0, 1)
-            h = math.clamp(h, 0, 1)
+            uc = clamp(uc, 0, 1)
+            vc = clamp(vc, 0, 1)
+            w = clamp(w, 0, 1)
+            h = clamp(h, 0, 1)
 
             datastr = (
                 datastr + f"{v_class} {uc:.4f} {vc:.4f} {w:.4f} {h:.4f} {dist:.4f}\n"
