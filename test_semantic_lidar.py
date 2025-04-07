@@ -154,6 +154,9 @@ def main():
         world.set_weather(weather)
         print("Weather set to night")
 
+        # Print argument for number of vehicles
+        print("Number of vehicles: %d" % args.number_of_vehicles)
+
         # Remove parked vehicles
         objects_to_toggle = set()
         parked_cars = world.get_environment_objects(carla.CityObjectLabel.Car)
@@ -193,6 +196,7 @@ def main():
 
         spawn_points = world.get_map().get_spawn_points()
         number_of_spawn_points = len(spawn_points)
+        print("Number of spawn points: %d" % number_of_spawn_points)
 
         if args.number_of_vehicles < number_of_spawn_points:
             random.shuffle(spawn_points)
