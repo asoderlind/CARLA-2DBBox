@@ -700,8 +700,7 @@ def save2darknet(
             vc = ((box[0, 1] + box[1, 1]) / 2) / carla_img.height
             w = (box[1, 0] - box[0, 0]) / carla_img.width
             h = (box[1, 1] - box[0, 1]) / carla_img.height
-            breakpoint()
-            datastr = datastr + f"{v_class} {uc} {vc} {w} {h} {dist}\n"
+            datastr = datastr + f"{v_class} {uc} {vc} {w} {h}\n"
         with open(
             obj_path + "/" + str(customName) + "%06d.txt" % carla_img.frame, "w"
         ) as filetxt:
