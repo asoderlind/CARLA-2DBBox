@@ -64,8 +64,17 @@ def main():
         try:
             spectator.set_transform(get_transform(location, -30))
             if autoFill:
-                breakpoint()
-                x = 0
+                base_type = (
+                    vehicle_blueprints.find(vehicle.type_id)
+                    .get_attribute("base_type")
+                    .as_str()
+                    .lower()
+                )
+                try:
+                    x = cls2id.get(base_type)
+                except KeyError:
+                    print("KeyError: " + str(base_type))
+                    x = 9
                 print(str(vehicle.type_id) + " class " + str(x))
             else:
                 x = input(str(vehicle.type_id) + " class? (must be integer) ")
