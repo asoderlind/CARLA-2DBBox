@@ -86,6 +86,14 @@ def main():
         type=int,
         help="port to communicate with TM (default: 8000)",
     )
+    argparser.add_argument(
+        "-m",
+        "--map",
+        metavar="M",
+        default="Town01",
+        type=str,
+        help="map to load (default: Town01)",
+    )
 
     args = argparser.parse_args()
 
@@ -93,6 +101,16 @@ def main():
     nonvehicles_list = []
     client = carla.Client(args.host, args.port)
     client.set_timeout(10.0)
+
+    available_maps = client.get_available_maps()
+    if args.map not in available_maps:
+        print(
+            "Map %s is not available. Available maps are: %s"
+            % (args.map, available_maps)
+        )
+        sys.exit(1)
+    client.load_world(args.map)
+    print("Map %s loaded" % args.map)
 
     try:
         traffic_manager = client.get_trafficmanager(args.tm_port)
