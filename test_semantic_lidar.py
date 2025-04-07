@@ -117,13 +117,11 @@ def main():
     client.set_timeout(10.0)
 
     # For dataset metadata
-    vid_name = str(int(time.time()))
     train_set = args.training_set
     cur_frame = 0
     max_frames = args.frames
     print("Max frames: %d" % max_frames)
     print("Training set: %s" % train_set)
-    print("Video name: %s" % vid_name)
 
     available_maps = client.get_available_maps()
     map = f"/Game/Carla/Maps/{args.map}"
@@ -133,6 +131,12 @@ def main():
         sys.exit(1)
     client.load_world(map)
     print("Map %s loaded" % map)
+
+    # Unique video name
+    vid_name = (
+        str(int(time.time()))[:-5] + "-" + args.map + "-" + args.number_of_vehicles
+    )
+    print("Video name: %s" % vid_name)
 
     try:
         traffic_manager = client.get_trafficmanager(args.tm_port)
