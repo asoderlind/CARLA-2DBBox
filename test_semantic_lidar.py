@@ -103,13 +103,29 @@ def main():
         weather = world.get_weather()
         weather.sun_altitude_angle = -90
         world.set_weather(weather)
+        print("Weather set to night")
 
         # Remove parked vehicles
         objects_to_toggle = set()
         parked_cars = world.get_environment_objects(carla.CityObjectLabel.Car)
-        for parked_car in parked_cars:
-            if parked_car.id not in objects_to_toggle:
-                objects_to_toggle.add(parked_car.id)
+        parked_buses = world.get_environment_objects(carla.CityObjectLabel.Bus)
+        parked_trucks = world.get_environment_objects(carla.CityObjectLabel.Truck)
+        parked_motorcycles = world.get_environment_objects(
+            carla.CityObjectLabel.Motorcycle
+        )
+        parked_bicycles = world.get_environment_objects(carla.CityObjectLabel.Bicycle)
+        parked_riders = world.get_environment_objects(carla.CityObjectLabel.Rider)
+        parked_vehicles = (
+            parked_cars
+            + parked_buses
+            + parked_trucks
+            + parked_motorcycles
+            + parked_bicycles
+            + parked_riders
+        )
+        for parked_vehicle in parked_vehicles:
+            if parked_vehicle.id not in objects_to_toggle:
+                objects_to_toggle.add(parked_vehicle.id)
         world.enable_environment_objects(objects_to_toggle, False)
         print("Parked vehicles removed")
 
