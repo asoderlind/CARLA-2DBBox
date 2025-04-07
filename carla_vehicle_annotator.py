@@ -705,6 +705,13 @@ def save2darknet(
             vc = ((box[0, 1] + box[1, 1]) / 2) / carla_img.height
             w = (box[1, 0] - box[0, 0]) / carla_img.width
             h = (box[1, 1] - box[0, 1]) / carla_img.height
+
+            # Fit everything inside the [0,1] range
+            uc = math.clamp(uc, 0, 1)
+            vc = math.clamp(vc, 0, 1)
+            w = math.clamp(w, 0, 1)
+            h = math.clamp(h, 0, 1)
+
             datastr = (
                 datastr + f"{v_class} {uc:.4f} {vc:.4f} {w:.4f} {h:.4f} {dist:.4f}\n"
             )
