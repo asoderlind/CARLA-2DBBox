@@ -12,6 +12,7 @@ import glob
 import os
 import sys
 import time
+from tqdm import tqdm
 
 try:
     sys.path.append(
@@ -281,6 +282,7 @@ def main():
 
         # Begin the loop
         time_sim = 0
+        progress_bar = tqdm(total=max_frames, desc="Frames", unit="frames")
         while True:
             # Extract the available data
             nowFrame = world.tick()
@@ -335,9 +337,12 @@ def main():
 
                 time_sim = 0
                 cur_frame += 1
+                progress_bar.update(1)  # <-- Update progress bar
             if cur_frame >= max_frames:
                 break
             time_sim = time_sim + settings.fixed_delta_seconds
+
+        progress_bar.close()  # <-- Close progress bar when done
 
     finally:
         try:
