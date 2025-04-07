@@ -659,6 +659,7 @@ def save2darknet(
     carla_img,
     dataset_path="../yolo-testing/datasets/carla-yolo",
     cc_rgb=carla.ColorConverter.Raw,
+    video_name="vid_000",
     train_set="train",
 ):
     # check whether target path exists
@@ -694,7 +695,9 @@ def save2darknet(
         img_rgb = np.uint8(img_rgb)
         image = Image.fromarray(img_rgb, "RGB")
         # os.makedirs(os.path.dirname(obj_path + '/%06d.jpg' % carla_img.frame))
-        image.save(imgs_path + "%06d.jpg" % carla_img.frame)
+        image.save(
+            imgs_path + "vid_" + video_name + "_frame_%06d.jpg" % carla_img.frame
+        )
 
         # save bounding box data
         datastr = ""
@@ -707,7 +710,7 @@ def save2darknet(
                 datastr + f"{v_class} {uc:.4f} {vc:.4f} {w:.4f} {h:.4f} {dist:.4f}\n"
             )
         with open(
-            labels_path + "%06d.txt" % carla_img.frame,
+            labels_path + "vid_" + video_name + "_frame_%06d.txt" % carla_img.frame,
             "w",
         ) as filetxt:
             filetxt.write(datastr)

@@ -94,6 +94,15 @@ def main():
         type=str,
         help="map to load (default: Town01)",
     )
+    argparser.add_argument(
+        "-t",
+        "--training-set",
+        metavar="T",
+        default="train",
+        type=str,
+        help="training set to save the data (default: train)",
+        choices=["train", "val"],
+    )
 
     args = argparser.parse_args()
 
@@ -101,6 +110,10 @@ def main():
     nonvehicles_list = []
     client = carla.Client(args.host, args.port)
     client.set_timeout(10.0)
+
+    # For dataset metadata
+    vid_name = str(int(time.time()))
+    train_set = args.training_set
 
     available_maps = client.get_available_maps()
     map = f"/Game/Carla/Maps/{args.map}"
@@ -305,6 +318,8 @@ def main():
                         filtered_out["class"],
                         filtered_out["distances"],
                         rgb_img,
+                        video_name=vid_name,
+                        train_set=train_set,
                     )
 
                 time_sim = 0
