@@ -103,14 +103,13 @@ def main():
     client.set_timeout(10.0)
 
     available_maps = client.get_available_maps()
-    if args.map not in available_maps:
-        print(
-            "Map %s is not available. Available maps are: %s"
-            % (args.map, available_maps)
-        )
+    map = f"/Game/Carla/Maps/{args.map}"
+
+    if map not in available_maps:
+        print("Map %s is not available. Available maps are: %s" % (map, available_maps))
         sys.exit(1)
-    client.load_world(args.map)
-    print("Map %s loaded" % args.map)
+    client.load_world(map)
+    print("Map %s loaded" % map)
 
     try:
         traffic_manager = client.get_trafficmanager(args.tm_port)
