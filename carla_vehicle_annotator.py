@@ -667,15 +667,15 @@ def save2darknet(
         os.makedirs(os.path.dirname(dataset_path))
         print(dataset_path + " directory did not exists, new directory created")
 
-    imgs_path = f"{dataset_path}/images/{train_set}"
+    imgs_path = f"{dataset_path}/images/{train_set}/"
     if not os.path.exists(os.path.dirname(imgs_path)):
-        print(imgs_path + " directory did not exists, new directory created")
         os.makedirs(os.path.dirname(imgs_path))
+        print(imgs_path + " directory did not exists, new directory created")
 
-    labels_path = f"{dataset_path}/labels/{train_set}"
+    labels_path = f"{dataset_path}/labels/{train_set}/"
     if not os.path.exists(os.path.dirname(labels_path)):
-        print(labels_path + " directory did not exists, new directory created")
         os.makedirs(os.path.dirname(labels_path))
+        print(labels_path + " directory did not exists, new directory created")
 
     bbr = bboxes is not None
     vcr = vehicle_class is not None
@@ -694,7 +694,7 @@ def save2darknet(
         img_rgb = np.uint8(img_rgb)
         image = Image.fromarray(img_rgb, "RGB")
         # os.makedirs(os.path.dirname(obj_path + '/%06d.jpg' % carla_img.frame))
-        image.save(imgs_path + "/%06d.jpg" % carla_img.frame)
+        image.save(imgs_path + "%06d.jpg" % carla_img.frame)
 
         # save bounding box data
         datastr = ""
@@ -707,7 +707,7 @@ def save2darknet(
                 datastr + f"{v_class} {uc:.4f} {vc:.4f} {w:.4f} {h:.4f} {dist:.4f}\n"
             )
         with open(
-            labels_path + "/%06d.txt" % carla_img.frame,
+            labels_path + "%06d.txt" % carla_img.frame,
             "w",
         ) as filetxt:
             filetxt.write(datastr)
