@@ -657,21 +657,25 @@ def save2darknet(
     vehicle_class,
     distances,
     carla_img,
-    data_path="../yolo-testing/datasets/carla-yolo",
+    dataset_path="../yolo-testing/datasets/carla-yolo",
     cc_rgb=carla.ColorConverter.Raw,
-    customName="train",
+    train_set="train",
 ):
     # check whether target path exists
-    if customName != "":
-        customName = str(customName) + "_"
-    data_path = data_path + "data/"
-    if not os.path.exists(os.path.dirname(data_path)):
-        os.makedirs(os.path.dirname(data_path))
-        print(data_path + " directory did not exists, new directory created")
-    obj_path = data_path + "obj/"
-    if not os.path.exists(os.path.dirname(obj_path)):
-        print(obj_path + " directory did not exists, new directory created")
-        os.makedirs(os.path.dirname(obj_path))
+    dataset_path = dataset_path
+    if not os.path.exists(os.path.dirname(dataset_path)):
+        os.makedirs(os.path.dirname(dataset_path))
+        print(dataset_path + " directory did not exists, new directory created")
+
+    imgs_path = f"{dataset_path}/images/{train_set}"
+    if not os.path.exists(os.path.dirname(imgs_path)):
+        print(imgs_path + " directory did not exists, new directory created")
+        os.makedirs(os.path.dirname(imgs_path))
+
+    labels_path = f"{dataset_path}/labels/{train_set}"
+    if not os.path.exists(os.path.dirname(labels_path)):
+        print(labels_path + " directory did not exists, new directory created")
+        os.makedirs(os.path.dirname(labels_path))
 
     bbr = bboxes is not None
     vcr = vehicle_class is not None
@@ -690,7 +694,7 @@ def save2darknet(
         img_rgb = np.uint8(img_rgb)
         image = Image.fromarray(img_rgb, "RGB")
         # os.makedirs(os.path.dirname(obj_path + '/%06d.jpg' % carla_img.frame))
-        image.save(obj_path + "/" + str(customName) + "%06d.jpg" % carla_img.frame)
+        image.save(imgs_path + "/%06d.jpg" % carla_img.frame)
 
         # save bounding box data
         datastr = ""
@@ -703,7 +707,8 @@ def save2darknet(
                 datastr + f"{v_class} {uc:.4f} {vc:.4f} {w:.4f} {h:.4f} {dist:.4f}\n"
             )
         with open(
-            obj_path + "/" + str(customName) + "%06d.txt" % carla_img.frame, "w"
+            labels_path + "/%06d.txt" % carla_img.frame,
+            "w",
         ) as filetxt:
             filetxt.write(datastr)
             filetxt.close()
