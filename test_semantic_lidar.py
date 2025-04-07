@@ -265,7 +265,6 @@ def main():
 
                 # Calculating visible bounding boxes
                 filtered_out, _ = cva.auto_annotate_lidar(
-                    ego_vehicle,
                     vehicles,
                     cam,
                     lidar_img,
@@ -285,7 +284,10 @@ def main():
                 # Save the results to darknet format
                 if save_darknet:
                     cva.save2darknet(
-                        filtered_out["bbox"], filtered_out["class"], rgb_img
+                        filtered_out["bbox"],
+                        filtered_out["class"],
+                        filtered_out["distances"],
+                        rgb_img,
                     )
 
                 time_sim = 0
@@ -294,7 +296,7 @@ def main():
     finally:
         try:
             if save_darknet:
-                cva.save2darknet(None, None, None, save_train=True)
+                cva.save2darknet(None, None, None, None, save_train=True)
         except:
             print("No darknet formatted data directory found")
         try:

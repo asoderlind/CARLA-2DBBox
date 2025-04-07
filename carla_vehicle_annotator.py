@@ -30,7 +30,6 @@ import carla
 
 ### Use this function to get 2D bounding boxes of visible vehicles to camera using semantic LIDAR
 def auto_annotate_lidar(
-    ego_vehicle,
     vehicles,
     camera,
     lidar_data,
@@ -58,23 +57,15 @@ def auto_annotate_lidar(
         if idx_counts[(visible_id == v.id).nonzero()[0]] >= min_detect
     ]
     bounding_boxes_2d = [get_2d_bb(vehicle, camera) for vehicle in visible_vehicles]
-    vehicle_distances = [
-        v.get_transform().location.distance(ego_vehicle.get_transform().location)
-        / max_dist
-        for v in visible_vehicles
-    ]
     vehicle_distances_cam = [
         v.get_transform().location.distance(camera.get_transform().location) / max_dist
         for v in visible_vehicles
     ]
 
-    if len(vehicle_distances) > 0 or len(vehicle_distances_cam) > 0:
-        breakpoint()
-
     filtered_out = {}
     filtered_out["vehicles"] = visible_vehicles
     filtered_out["bbox"] = bounding_boxes_2d
-    filtered_out["distances"] = vehicle_distances
+    filtered_out["distances"] = vehicle_distances_cam
     if json_path is not None:
         filtered_out["class"] = get_vehicle_class(visible_vehicles, json_path)
     return filtered_out, filtered_data
@@ -664,6 +655,7 @@ def save_output(
 def save2darknet(
     bboxes,
     vehicle_class,
+    distances,
     carla_img,
     data_path="",
     cc_rgb=carla.ColorConverter.Raw,
@@ -685,7 +677,8 @@ def save2darknet(
     bbr = bboxes is not None
     vcr = vehicle_class is not None
     cir = carla_img is not None
-    if bbr or vcr or cir:
+    distances = distances is not None
+    if bbr or vcr or cir or distances:
         # save image
         carla_img.convert(cc_rgb)
         img_bgra = np.array(carla_img.raw_data).reshape(
@@ -702,12 +695,12 @@ def save2darknet(
 
         # save bounding box data
         datastr = ""
-        for box, v_class in zip(bboxes, vehicle_class):
+        for box, v_class, dist in zip(bboxes, vehicle_class, distances):
             uc = ((box[0, 0] + box[1, 0]) / 2) / carla_img.width
             vc = ((box[0, 1] + box[1, 1]) / 2) / carla_img.height
             w = (box[1, 0] - box[0, 0]) / carla_img.width
             h = (box[1, 1] - box[0, 1]) / carla_img.height
-            datastr = datastr + f"{v_class} {uc} {vc} {w} {h} \n"
+            datastr = datastr + f"{v_class} {uc} {vc} {w} {h} {dist}\n"
         with open(
             obj_path + "/" + str(customName) + "%06d.txt" % carla_img.frame, "w"
         ) as filetxt:
