@@ -21,6 +21,7 @@ import glob
 import sys
 import cv2
 import carla
+import math
 
 
 ### PART 0
