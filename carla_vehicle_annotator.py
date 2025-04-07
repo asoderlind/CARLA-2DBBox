@@ -63,8 +63,12 @@ def auto_annotate_lidar(
         / max_dist
         for v in visible_vehicles
     ]
+    vehicle_distances_cam = [
+        v.get_transform().location.distance(camera.get_transform().location) / max_dist
+        for v in visible_vehicles
+    ]
 
-    if len(vehicle_distances) > 0:
+    if len(vehicle_distances) > 0 or len(vehicle_distances_cam) > 0:
         breakpoint()
 
     filtered_out = {}
