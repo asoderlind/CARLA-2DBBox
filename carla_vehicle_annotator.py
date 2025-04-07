@@ -657,10 +657,9 @@ def save2darknet(
     vehicle_class,
     distances,
     carla_img,
-    data_path="",
+    data_path="../yolo-testing/datasets/carla-yolo",
     cc_rgb=carla.ColorConverter.Raw,
-    save_train=False,
-    customName="",
+    customName="train",
 ):
     # check whether target path exists
     if customName != "":
@@ -708,20 +707,6 @@ def save2darknet(
         ) as filetxt:
             filetxt.write(datastr)
             filetxt.close()
-
-    # save train.txt
-    if save_train:
-        img_list = glob.glob(obj_path + "/*.jpg")
-        if len(img_list) == 0:
-            print("no image found")
-        else:
-            trainstr = ""
-            for imgname in img_list:
-                trainstr = trainstr + imgname + "\n"
-            trainstr = trainstr.replace("\\", "/")
-            with open(data_path + "/train.txt", "w") as filetxt:
-                filetxt.write(trainstr)
-                filetxt.close()
 
 
 ### Use this function to convert depth image (carla.Image) to a depth map in meter
