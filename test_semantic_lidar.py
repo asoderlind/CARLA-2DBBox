@@ -25,7 +25,6 @@ try:
         )[0]
     )
 except IndexError:
-    print("carla not found")
     pass
 
 import carla
@@ -34,9 +33,6 @@ import argparse
 import logging
 import random
 import queue
-import numpy as np
-from matplotlib import pyplot as plt
-import cv2
 import carla_vehicle_annotator as cva
 
 ### Set to True if you need to save the data in darknet training format, False otherwise
@@ -103,6 +99,14 @@ def main():
         help="training set to save the data (default: train)",
         choices=["train", "val"],
     )
+    argparser.add_argument(
+        "-f",
+        "--frames",
+        metavar="I",
+        default=100,
+        type=int,
+        help="number of frames to run (default: 100)",
+    )
 
     args = argparser.parse_args()
 
@@ -114,6 +118,11 @@ def main():
     # For dataset metadata
     vid_name = str(int(time.time()))
     train_set = args.training_set
+    cur_frame = 0
+    max_frames = args.frames
+    print("Max frames: %d" % max_frames)
+    print("Training set: %s" % train_set)
+    print("Video name: %s" % vid_name)
 
     available_maps = client.get_available_maps()
     map = f"/Game/Carla/Maps/{args.map}"
@@ -275,6 +284,7 @@ def main():
         while True:
             # Extract the available data
             nowFrame = world.tick()
+            print("Frame: %d" % cur_frame)
 
             # Check whether it's time for sensor to capture data
             if time_sim >= 1:
@@ -314,6 +324,7 @@ def main():
                 # Save the results to darknet format
                 if save_darknet:
                     cva.save2darknet(
+                        cur_frame,
                         filtered_out["bbox"],
                         filtered_out["class"],
                         filtered_out["distances"],
@@ -323,6 +334,9 @@ def main():
                     )
 
                 time_sim = 0
+                cur_frame += 1
+            if cur_frame >= max_frames:
+                break
             time_sim = time_sim + settings.fixed_delta_seconds
 
     finally:

@@ -653,6 +653,7 @@ def save_output(
 
 ### Use this function to save bounding box result in darknet training format
 def save2darknet(
+    frame_id,
     bboxes,
     vehicle_class,
     distances,
@@ -695,9 +696,7 @@ def save2darknet(
         img_rgb = np.uint8(img_rgb)
         image = Image.fromarray(img_rgb, "RGB")
         # os.makedirs(os.path.dirname(obj_path + '/%06d.jpg' % carla_img.frame))
-        image.save(
-            imgs_path + "vid_" + video_name + "_frame_%06d.jpg" % carla_img.frame
-        )
+        image.save(imgs_path + "vid_" + video_name + "_frame_%06d.jpg" % frame_id)
 
         # save bounding box data
         datastr = ""
@@ -710,7 +709,7 @@ def save2darknet(
                 datastr + f"{v_class} {uc:.4f} {vc:.4f} {w:.4f} {h:.4f} {dist:.4f}\n"
             )
         with open(
-            labels_path + "vid_" + video_name + "_frame_%06d.txt" % carla_img.frame,
+            labels_path + "vid_" + video_name + "_frame_%06d.txt" % frame_id,
             "w",
         ) as filetxt:
             filetxt.write(datastr)
