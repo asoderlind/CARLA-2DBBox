@@ -715,6 +715,10 @@ def save2darknet(
             vc = clamp(vc, 0, 1)
             w = clamp(w, 0, 1)
             h = clamp(h, 0, 1)
+            dist = clamp(dist, 0, 1)
+
+            if dist < 0.05:
+                continue  # skip if the distance is too small
 
             datastr = (
                 datastr + f"{v_class} {uc:.4f} {vc:.4f} {w:.4f} {h:.4f} {dist:.4f}\n"
