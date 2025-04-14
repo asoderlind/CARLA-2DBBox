@@ -720,11 +720,11 @@ def save2darknet(
             if dist < 0.05:
                 continue  # skip if the distance is too small
 
-            if w == 1.0:
-                continue  # skip if the width of the box is the whole frame
+            if w >= 0.9:
+                continue  # skip if the width of the box is too big
 
-            if h == 1.0:
-                continue  # skip if the height of the box is the whole frame
+            if h >= 0.9:
+                continue  # skip if the height of the box is too big
 
             datastr = (
                 datastr + f"{v_class} {uc:.4f} {vc:.4f} {w:.4f} {h:.4f} {dist:.4f}\n"
