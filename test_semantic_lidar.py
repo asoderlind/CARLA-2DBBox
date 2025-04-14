@@ -73,7 +73,7 @@ def main():
         metavar="N",
         default=100,
         type=int,
-        help="number of vehicles (default: 10)",
+        help="number of vehicles (default: 100)",
     )
     argparser.add_argument(
         "-tm_p",
@@ -87,9 +87,9 @@ def main():
         "-m",
         "--map",
         metavar="M",
-        default="Town01",
+        default="Town06",
         type=str,
-        help="map to load (default: Town01)",
+        help="map to load (default: Town06)",
     )
     argparser.add_argument(
         "-t",
