@@ -108,6 +108,14 @@ def main():
         type=int,
         help="number of frames to run (default: 100)",
     )
+    argparser.add_argument(
+        "-d",
+        "--dataset-path",
+        metavar="D",
+        default="../yolo-testing/datasets/carla-yolo",
+        type=str,
+        help="relative path to which we save the yolo files",
+    )
 
     args = argparser.parse_args()
 
@@ -344,6 +352,7 @@ def main():
                         filtered_out["distances"],
                         rgb_img,
                         video_name=vid_name,
+                        dataset_path=args.dataset_path,
                         train_set=train_set,
                     )
 
