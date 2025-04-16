@@ -249,6 +249,15 @@ def main():
 
         print("Created %d npc vehicles \n" % len(vehicles_list))
 
+        light_mask = carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam
+        all_vehicles = world.get_actors()
+        for ve in all_vehicles:
+            if "vehicle." in ve.type_id:
+                ve.set_light_state(carla.VehicleLightState(light_mask))
+        print("All vehicles lights on")
+
+        print("NPC vehicles ready")
+
         # -----------------------------
         # Spawn ego vehicle and sensors
         # -----------------------------
