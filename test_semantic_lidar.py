@@ -116,6 +116,14 @@ def main():
         type=str,
         help="relative path to which we save the yolo files",
     )
+    argparser.add_argument(
+        "c",
+        "--min-detect",
+        metavar="C",
+        default=10,
+        type=int,
+        help="minimum number of detection points for the vehicle to be considered",
+    )
 
     args = argparser.parse_args()
 
@@ -339,6 +347,7 @@ def main():
                     cam,
                     lidar_img,
                     show_img=rgb_img,
+                    min_detect=args.min_detect,
                     json_path="vehicle_class_json_file.txt",
                 )
 
