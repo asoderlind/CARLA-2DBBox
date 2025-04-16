@@ -249,15 +249,6 @@ def main():
 
         print("Created %d npc vehicles \n" % len(vehicles_list))
 
-        light_mask = carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam
-        all_vehicles = world.get_actors()
-        for ve in all_vehicles:
-            if "vehicle." in ve.type_id:
-                ve.set_light_state(carla.VehicleLightState(light_mask))
-        print("All vehicles lights on")
-
-        print("NPC vehicles ready")
-
         # -----------------------------
         # Spawn ego vehicle and sensors
         # -----------------------------
@@ -277,6 +268,14 @@ def main():
         vehicles_list.append(ego_vehicle)
         ego_vehicle.set_autopilot(True)
         print("Ego-vehicle ready")
+
+        # Turn on the lights of all vehicles
+        light_mask = carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam
+        all_vehicles = world.get_actors()
+        for ve in all_vehicles:
+            if "vehicle." in ve.type_id:
+                ve.set_light_state(carla.VehicleLightState(light_mask))
+        print("All vehicles lights on")
 
         # Spawn RGB camera
         cam_transform = carla.Transform(carla.Location(x=1.5, z=2.4))
