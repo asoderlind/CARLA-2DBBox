@@ -117,7 +117,7 @@ def main():
         help="relative path to which we save the yolo files",
     )
     argparser.add_argument(
-        "c",
+        "-c",
         "--min-detect",
         metavar="C",
         default=10,
