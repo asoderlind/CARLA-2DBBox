@@ -71,7 +71,7 @@ def main():
         "-n",
         "--number-of-vehicles",
         metavar="N",
-        default=100,
+        default=150,
         type=int,
         help="number of vehicles (default: 100)",
     )
@@ -124,6 +124,14 @@ def main():
         type=int,
         help="minimum number of detection points for the vehicle to be considered",
     )
+    argparser.add_argument(
+        "-s",
+        "--sun-altitude",
+        metavar="S",
+        default=-90,
+        type=int,
+        help="sun altitude angle (default: -90)",
+    )
 
     args = argparser.parse_args()
 
@@ -166,7 +174,7 @@ def main():
 
         # Set weather
         weather = world.get_weather()
-        weather.sun_altitude_angle = -90
+        weather.sun_altitude_angle = args.sun_altitude
         world.set_weather(weather)
         print("Weather set to night")
 
