@@ -129,7 +129,7 @@ def main():
         "--sun-altitude",
         metavar="S",
         default=-90,
-        type=int,
+        type=float,
         help="sun altitude angle (default: -90)",
     )
 
